@@ -9,7 +9,9 @@ const AppLayout = () => {
         <Header />
         <Outlet />
       </main>
-      <div className="p-10 text-center bg-gray-800">Made with ❤️ by Vinay Chhabra</div>
+      <div className="mt-4 sm:mt-2 p-10 text-center bg-gray-800">
+        Made with ❤️ by Vinay Chhabra
+      </div>
     </div>
   );
 };
