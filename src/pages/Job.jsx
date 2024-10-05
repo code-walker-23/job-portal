@@ -10,10 +10,11 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectGroup,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import ApplyJobDrawer from "@/components/ApplyJobDrawer";
 
 const Job = () => {
   const { user, isLoaded } = useUser();
@@ -112,6 +113,17 @@ const Job = () => {
         source={job?.requirements}
         className="bg-transparent sm:text-lg"
       />
+
+      {job?.recruiter_id !== user?.id && (
+        <ApplyJobDrawer
+          job={job}
+          user={user}
+          fetchJob={fetchJob}
+          applied={job?.applications?.find(
+            (app) => app.candidate_id === user.id
+          )}
+        />
+      )}
     </div>
   );
 };
