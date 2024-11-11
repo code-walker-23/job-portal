@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { getSingleJob, updateHiringStatus } from "@/api/apiJobs";
 import useFetch from "@/hooks/useFetch";
 import { useUser } from "@clerk/clerk-react";
@@ -25,7 +27,7 @@ const Job = () => {
     loading: loadingJob,
     data: job,
     fetchData: fetchJob,
-  } = useFetch(getSingleJob, { job_id: id });
+  } = useFetch(getSingleJob, { job_id: id }); // instead of passing the job_id here we can pass it with the fetchJob()
 
   const {
     loading: loadingHiringStatus,
@@ -39,7 +41,7 @@ const Job = () => {
   };
 
   useEffect(() => {
-    if (isLoaded) fetchJob();
+    if (isLoaded) fetchJob(); // wen want to fetch the job only when user status changes
   }, [isLoaded]);
 
   console.log(job);

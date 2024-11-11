@@ -31,8 +31,8 @@ const ApplicationCard = ({ application, isCandidate = false, job }) => {
     fetchData: fetchApplicationStatus,
   } = useFetch(updateApplicationStatus, { job_id: application.job_id });
 
-  const handleUpdatingApplicationStatus = (status) => {
-    fetchApplicationStatus(status);
+  const handleUpdatingApplicationStatus = async (status) => {
+    await fetchApplicationStatus(status);
   };
   return (
     <Card>

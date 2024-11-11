@@ -2,7 +2,7 @@ import supabaseClient from "@/utils/supabase";
 
 export async function getJobs(token, { location, company_id, searchQuery }) {
   const supabase = await supabaseClient(token);
-  let query = supabase
+  let query = await supabase
     .from("jobs")
     .select("*, saved: saved_jobs(id), company: companies(name,logo_url)");
 
@@ -96,6 +96,18 @@ export async function addNewJob(token, _, jobData) {
     .from("jobs")
     .insert([jobData])
     .select();
+
+  if (error) {
+    console.error("Error Updating Job:", error);
+    return null;
+  }
+  return data;
+}
+
+export async function getSavedJobs(token) {
+  const supabase = await supabaseClient(token);
+
+  const { data, error } = await supabase.from("saved_jobs").select("*");
 
   if (error) {
     console.error("Error Updating Job:", error);

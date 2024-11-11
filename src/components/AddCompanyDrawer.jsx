@@ -10,27 +10,13 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import useFetch from "@/hooks/useFetch";
 import { addNewCompany } from "@/api/apiCompanies";
 import { BarLoader } from "react-spinners";
 import { useEffect } from "react";
-
-const schema = z.object({
-  name: z.string().min(1, { message: "Company name is required" }),
-  logo: z
-    .any()
-    .refine(
-      (file) =>
-        file[0] &&
-        (file[0].type === "image/png" || file[0].type === "image/jpeg"),
-      {
-        message: "Only Images are allowed",
-      }
-    ),
-});
+import { companySchema } from "@/lib/validators";
 
 const AddCompanyDrawer = ({ fetchCompanies }) => {
   const {
@@ -38,7 +24,7 @@ const AddCompanyDrawer = ({ fetchCompanies }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(companySchema),
   });
 
   const {
@@ -49,7 +35,7 @@ const AddCompanyDrawer = ({ fetchCompanies }) => {
   } = useFetch(addNewCompany);
 
   const onSubmit = async (data) => {
-    fnAddCompany({
+    await fnAddCompany({
       ...data,
       logo: data.logo[0],
     });
