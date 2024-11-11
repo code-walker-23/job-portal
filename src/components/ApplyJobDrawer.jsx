@@ -13,32 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "./ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useFetch from "@/hooks/useFetch";
 import { applyToJob } from "@/api/apiApplications";
 import { BarLoader } from "react-spinners";
-
-const schema = z.object({
-  experience: z
-    .number()
-    .min(0, { message: "Exprerience must be atleast 0" })
-    .int(),
-  skills: z.string().min(1, { message: "Skills are required" }),
-  education: z.enum(["Intermediate", "Graduate", "Post Graduate"], {
-    message: "Education is required",
-  }),
-  resume: z
-    .any()
-    .refine(
-      (file) =>
-        file[0] &&
-        (file[0].type === "application/pdf" ||
-          file[0].type === "application/msword"),
-      { message: "Only PDF or Word Documents are allowed" }
-    ),
-});
+import { applyJobSchema } from "@/lib/validators";
 
 const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
   const {
@@ -48,17 +28,17 @@ const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(applyJobSchema),
   });
 
   const {
-    loading: loadingApply,
-    error: errorApply,
-    fetchData: fetchApply,
+    loading: loadingApplyToJob,
+    error: errorApplyToJob,
+    fetchData: fetchApplyToJob,
   } = useFetch(applyToJob);
 
   const onSubmit = (data) => {
-    fetchApply({
+    fetchApplyToJob({
       ...data,
       job_id: job.id,
       candidate_id: user.id,
@@ -72,6 +52,7 @@ const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
   };
 
   return (
+    // we are using undefined instead of using true because of automatically open on each render
     <Drawer open={applied ? false : undefined}>
       <DrawerTrigger asChild>
         <Button
@@ -150,11 +131,11 @@ const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
             <p className="text-red-500">{errors.resume.message}</p>
           )}
 
-          {errorApply?.message && (
-            <p className="text-red-500">{errorApply.message}</p>
+          {errorApplyToJob?.message && (
+            <p className="text-red-500">{errorApplyToJob.message}</p>
           )}
 
-          {loadingApply && <BarLoader width={"100%"} color="#36d7b7" />}
+          {loadingApplyToJob && <BarLoader width={"100%"} color="#36d7b7" />}
 
           <Button type="submit" variant="blue" size="lg">
             Apply

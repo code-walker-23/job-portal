@@ -13,3 +13,23 @@ export const companySchema = z.object({
       }
     ),
 });
+
+export const applyJobSchema = z.object({
+  experience: z
+    .number()
+    .min(0, { message: "Exprerience must be atleast 0" })
+    .int(),
+  skills: z.string().min(1, { message: "Skills are required" }),
+  education: z.enum(["Intermediate", "Graduate", "Post Graduate"], {
+    message: "Education is required",
+  }),
+  resume: z
+    .any()
+    .refine(
+      (file) =>
+        file[0] &&
+        (file[0].type === "application/pdf" ||
+          file[0].type === "application/msword"),
+      { message: "Only PDF or Word Documents are allowed" }
+    ),
+});
