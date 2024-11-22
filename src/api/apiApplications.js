@@ -62,3 +62,4 @@ export async function getApplications(token, { user_id }) {
 
   return data;
 }
+// added apis of application
