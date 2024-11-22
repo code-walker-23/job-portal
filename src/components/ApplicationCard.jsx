@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { BriefcaseBusiness, Download } from "lucide-react";
+import { Boxes, BriefcaseBusiness, Download, School } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -18,34 +18,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const ApplicationCard = ({ application, isCandidate = false, job }) => {
-  const handleDowload = () => {
+const ApplicationCard = ({ application, isCandidate = false }) => {
+  const handleDownload = () => {
     const link = document.createElement("a");
     link.href = application?.resume;
     link.target = "_blank";
     link.click();
   };
 
-  const {
-    loading: loadingApplicationStatus,
-    fetchData: fetchApplicationStatus,
-  } = useFetch(updateApplicationStatus, { job_id: application.job_id });
+  const { loading: loadingHiringStatus, fn: fnHiringStatus } = useFetch(
+    updateApplicationStatus,
+    {
+      job_id: application.job_id,
+    }
+  );
 
-  const handleUpdatingApplicationStatus = async (status) => {
-    await fetchApplicationStatus(status);
+  const handleStatusChange = (status) => {
+    fnHiringStatus(status).then(() => fnHiringStatus());
   };
+
   return (
     <Card>
-      {loadingApplicationStatus && <BarLoader width={"100%"} color="#36d7b7" />}
+      {loadingHiringStatus && <BarLoader width={"100%"} color="#36d7b7" />}
       <CardHeader>
         <CardTitle className="flex justify-between font-bold">
           {isCandidate
-            ? `${job?.title} at ${job.company.name}`
-            : `${application?.name}`}
+            ? `${application?.job?.title} at ${application?.job?.company?.name}`
+            : application?.name}
           <Download
             size={18}
             className="bg-white text-black rounded-full h-8 w-8 p-1.5 cursor-pointer"
-            onClick={handleDowload}
+            onClick={handleDownload}
           />
         </CardTitle>
       </CardHeader>
@@ -56,10 +59,11 @@ const ApplicationCard = ({ application, isCandidate = false, job }) => {
             experience
           </div>
           <div className="flex gap-2 items-center">
-            <BriefcaseBusiness size={15} /> {application?.education}
-          </div>{" "}
+            <School size={15} />
+            {application?.education}
+          </div>
           <div className="flex gap-2 items-center">
-            <BriefcaseBusiness size={15} /> Skills: {application?.skills}
+            <Boxes size={15} /> Skills: {application?.skills}
           </div>
         </div>
         <hr />
@@ -67,26 +71,24 @@ const ApplicationCard = ({ application, isCandidate = false, job }) => {
       <CardFooter className="flex justify-between">
         <span>{new Date(application?.created_at).toLocaleString()}</span>
         {isCandidate ? (
-          <span className="font-bold capitalize">
-            status: {application?.status}
+          <span className="capitalize font-bold">
+            Status: {application.status}
           </span>
         ) : (
-          <>
-            <Select
-              onValueChange={handleUpdatingApplicationStatus}
-              defaultValue={application?.status}
-            >
-              <SelectTrigger className="w-52">
-                <SelectValue placeholder="Application Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={"applied"}>Applied</SelectItem>
-                <SelectItem value={"interviewing"}>Interviewing</SelectItem>
-                <SelectItem value={"hired"}>Hired</SelectItem>
-                <SelectItem value={"rejected"}>Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-          </>
+          <Select
+            onValueChange={handleStatusChange}
+            defaultValue={application.status}
+          >
+            <SelectTrigger className="w-52">
+              <SelectValue placeholder="Application Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="applied">Applied</SelectItem>
+              <SelectItem value="interviewing">Interviewing</SelectItem>
+              <SelectItem value="hired">Hired</SelectItem>
+              <SelectItem value="rejected">Rejected</SelectItem>
+            </SelectContent>
+          </Select>
         )}
       </CardFooter>
     </Card>
