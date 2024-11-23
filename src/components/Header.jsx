@@ -49,7 +49,7 @@ const Header = () => {
                 )}
                 <UserButton.Link
                   label="My Applications"
-                  labelIcon={<Heart size={15} />}
+                  labelIcon={<BriefcaseBusiness size={15} />}
                   href="/my-applications"
                 ></UserButton.Link>
                 <UserButton.Link
