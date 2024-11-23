@@ -10,6 +10,7 @@ const ProtectedRoutes = ({ children }) => {
   if (isLoaded && !isSignedIn) {
     return <Navigate to="/sign-in" />;
   }
+  
 
   // Check if the user has a role and is not on the onboarding page
   if (
