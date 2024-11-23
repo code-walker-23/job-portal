@@ -1,8 +1,8 @@
-import CreatedJobs from "@/components/CreatedJobs";
+import CreatedApplications from "@/components/CreatedApplications";
 import { useUser } from "@clerk/clerk-react";
 import { BarLoader } from "react-spinners";
 
-const MyJobs = () => {
+const MyApplications = () => {
   const { isLoaded } = useUser();
 
   if (!isLoaded) {
@@ -12,11 +12,11 @@ const MyJobs = () => {
   return (
     <div>
       <h1 className="gradient-title font-extrabold text-5xl sm:text-7xl text-center pb-8">
-        My Jobs
+        My Applications
       </h1>
-      <CreatedJobs />
+      <CreatedApplications />
     </div>
   );
 };
 
-export default MyJobs;
+export default MyApplications;

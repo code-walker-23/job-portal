@@ -6,13 +6,10 @@ const ProtectedRoutes = ({ children }) => {
   const { isSignedIn, user, isLoaded } = useUser();
   const { pathname } = useLocation();
 
-  // Check if the user data is loaded and not signed in
   if (isLoaded && !isSignedIn) {
     return <Navigate to="/sign-in" />;
   }
-  
 
-  // Check if the user has a role and is not on the onboarding page
   if (
     isLoaded &&
     user &&
@@ -30,7 +27,6 @@ const ProtectedRoutes = ({ children }) => {
     return <Navigate to="/" />;
   }
 
-  // Render the children if all checks pass
   return children;
 };
 

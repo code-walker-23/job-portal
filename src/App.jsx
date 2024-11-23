@@ -12,6 +12,7 @@ import { ThemeProvider } from "./components/theme-provider";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";
+import MyApplications from "./pages/MyApplications";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoutes>
             <MyJobs />
+          </ProtectedRoutes>
+        ),
+      },
+      {
+        path: "/my-applications",
+        element: (
+          <ProtectedRoutes>
+            <MyApplications />
           </ProtectedRoutes>
         ),
       },
