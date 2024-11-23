@@ -69,8 +69,8 @@ A simple and real-time job portal platform designed to bridge the gap between ca
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/yourusername/hirrd.git
-   cd hirrd
+   git clone https://github.com/code-walker-23/job-portal.git
+   cd job-portal
    ```
 
 2. **Install dependencies**:
