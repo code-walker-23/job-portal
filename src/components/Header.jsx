@@ -1,30 +1,15 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   SignedIn,
   SignedOut,
-  SignIn,
   UserButton,
   useUser,
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
-import { useEffect, useState } from "react";
 const Header = () => {
-  const [showSignIn, setShowSignIn] = useState(false);
-  const [searchParam] = useSearchParams();
   const { user } = useUser();
-
-  useEffect(() => {
-    if (searchParam.get("sign-in") == "true") {
-      setShowSignIn(true);
-    }
-  }, [searchParam]);
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) {
-      setShowSignIn(false);
-    }
-  };
-
+  const navigate = useNavigate();
   return (
     <>
       <nav className="py-4 flex justify-between items-center">
@@ -34,11 +19,11 @@ const Header = () => {
 
         <div className="flex gap-8">
           <SignedOut>
-            <Button
-              variant="outline"
-              onClick={() => setShowSignIn(!showSignIn)}
-            >
+            <Button variant="outline" onClick={() => navigate("sign-in")}>
               Login
+            </Button>
+            <Button variant="outline" onClick={() => navigate("sign-up")}>
+              Signup
             </Button>
           </SignedOut>
 
@@ -73,18 +58,6 @@ const Header = () => {
             </UserButton>
           </SignedIn>
         </div>
-
-        {showSignIn && (
-          <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-            onClick={handleOverlayClick}
-          >
-            <SignIn
-              signUpForceRedirectUrl="/onboarding"
-              signUpFallbackRedirectUrl="/onboarding"
-            />
-          </div>
-        )}
       </nav>
     </>
   );

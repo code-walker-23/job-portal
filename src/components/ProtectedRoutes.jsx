@@ -8,12 +8,25 @@ const ProtectedRoutes = ({ children }) => {
 
   // Check if the user data is loaded and not signed in
   if (isLoaded && !isSignedIn) {
-    return <Navigate to="/?sign-in=true" />;
+    return <Navigate to="/sign-in" />;
   }
 
   // Check if the user has a role and is not on the onboarding page
-  if (isLoaded && user && !user?.unsafeMetadata?.role && pathname !== "/onboarding") {
+  if (
+    isLoaded &&
+    user &&
+    !user?.unsafeMetadata?.role &&
+    pathname !== "/onboarding"
+  ) {
     return <Navigate to="/onboarding" />;
+  }
+  if (
+    isLoaded &&
+    user &&
+    user?.unsafeMetadata?.role &&
+    pathname === "/onboarding"
+  ) {
+    return <Navigate to="/" />;
   }
 
   // Render the children if all checks pass
