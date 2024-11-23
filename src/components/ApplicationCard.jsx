@@ -26,7 +26,7 @@ const ApplicationCard = ({ application, isCandidate = false }) => {
     link.click();
   };
 
-  const { loading: loadingHiringStatus, fn: fnHiringStatus } = useFetch(
+  const { loading: loadingHiringStatus, fetchData: fnHiringStatus } = useFetch(
     updateApplicationStatus,
     {
       job_id: application.job_id,
